@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerAttributes : MonoBehaviour
 {
     public int health = 100;
+    public int endurance = 100;
     private int playerNumber;
 
     void Start()
@@ -14,7 +15,6 @@ public class PlayerAttributes : MonoBehaviour
 
     public void GetHit(int damage)
     {
-        
         health -= damage;
         Debug.Log("player " + playerNumber + " lost health : " + health + "health");
         if (IsDead())
