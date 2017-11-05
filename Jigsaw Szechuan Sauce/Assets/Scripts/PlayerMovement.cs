@@ -11,6 +11,9 @@ public class PlayerMovement : MonoBehaviour
     public float sprintingForce = 7f;
     public bool isSprinting;
 
+    [SerializeField]
+    private EnduranceBar enduranceBar;
+
     private Vector3 moveDirection = Vector3.zero;
     private PlayerAttributes playerAttributes;
 
@@ -39,11 +42,9 @@ public class PlayerMovement : MonoBehaviour
         //    controller.Move(moveDirection * Time.deltaTime);
         //}
 
-        // Sprinting
-        if (Input.GetButtonDown("Joy" + playerNumber + "_BButton"))
-        {
-            isSprinting = true;
-        }
+
+        Endurance();
+
 
         moveDirection = new Vector3(Input.GetAxis("Joy" + playerNumber + "_LeftJoyHorizontal"),
                                     0, Input.GetAxis("Joy" + playerNumber + "_LeftJoyVertical"));
@@ -55,5 +56,38 @@ public class PlayerMovement : MonoBehaviour
         var velocityChange = (moveDirection - velocity);
         velocityChange.y = 0;
         rb.AddForce(velocityChange, ForceMode.VelocityChange);
+    }
+
+    private void Endurance()
+    {
+
+        // Récupération d'endurance
+        if (playerAttributes.endurance < 100 && !isSprinting)
+        {
+            playerAttributes.endurance += 1;
+        }
+        // ENDURANCE
+        else if (Input.GetButton("Joy" + playerNumber + "_BButton"))
+        {
+            if (playerAttributes.endurance <= 0)
+            {
+                Debug.Log("player" + playerNumber + " endurance is depleted: " + playerAttributes.endurance + " endurance.");
+                isSprinting = false;
+            }
+            else if (playerAttributes.endurance > 0)
+            {
+                isSprinting = true;
+                playerAttributes.endurance -= 1;
+                Debug.Log("player" + playerNumber + " is sprinting with : " + playerAttributes.endurance + " endurance.");
+            }
+        }
+        else if (Input.GetButtonUp("Joy" + playerNumber + "_BButton"))
+        {
+            Debug.Log("player" + playerNumber + " has stopped sprinting : " + playerAttributes.endurance + " endurance.");
+
+            isSprinting = false;
+        }
+        enduranceBar.Endurance(playerNumber, playerAttributes.endurance);
+
     }
 }
