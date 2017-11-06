@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -30,6 +31,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1f;
         cam.enabled = false;
         mainCamera.enabled = true;
+        SceneManager.LoadScene("lvl1");
         // END GAME TO RESTART SCENE.
     }
 }
